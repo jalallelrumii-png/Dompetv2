@@ -372,7 +372,7 @@ body::before{
 
 /* EMOJI */
 .emo-grid{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:13px}
-.emo{width:40px;height:40px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:.15s}
+.emo{width:40px;height:40px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s;font-family:'Segoe UI Emoji','Noto Color Emoji','Apple Color Emoji',sans-serif}
 .emo.sel{border-color:var(--lime);background:rgba(200,255,0,.08)}
 .emo:active{transform:scale(.88)}
 
@@ -1090,9 +1090,21 @@ function setMonth(m){
 
 // ═══════ EMOJI GRID ═══════
 function buildEmoGrid(){
-  const list = '🏠🚗✈️📱💍👶🎓💰🏋️🛍️🎸🐕💻🌴🏖️🎯🏆💎🌟⚽🎂🏍️📸🎵'.split('');
-  document.getElementById('emo-grid').innerHTML = list.map(e=>
-    `<div class="emo ${e===D.ui.emoji?'sel':''}" onclick="pickEmoji('${e}')">${e}</div>`
+  // Pakai unicode yang didukung semua Android (bukan emoji kompleks)
+  const list = [
+    {e:'🏠',label:'Rumah'},  {e:'🚗',label:'Mobil'},   {e:'✈',label:'Pesawat'},
+    {e:'📱',label:'HP'},     {e:'💍',label:'Cincin'},   {e:'🎓',label:'Kuliah'},
+    {e:'💰',label:'Uang'},   {e:'🛍',label:'Belanja'},  {e:'💻',label:'Laptop'},
+    {e:'🌴',label:'Liburan'},{e:'🎯',label:'Target'},   {e:'🏆',label:'Juara'},
+    {e:'💎',label:'Berlian'},{e:'⭐',label:'Bintang'},  {e:'⚽',label:'Bola'},
+    {e:'🎂',label:'Ulang Thn'},{e:'📸',label:'Kamera'}, {e:'🎵',label:'Musik'},
+    {e:'🏍',label:'Motor'},  {e:'👶',label:'Anak'},     {e:'🐕',label:'Anjing'},
+    {e:'🌟',label:'Impian'}, {e:'🎸',label:'Gitar'},    {e:'💊',label:'Sehat'}
+  ];
+  document.getElementById('emo-grid').innerHTML = list.map(item=>`
+    <div class="emo ${item.e===D.ui.emoji?'sel':''}" onclick="pickEmoji('${item.e}')" title="${item.label}">
+      <span style="font-family:'Segoe UI Emoji','Noto Color Emoji','Apple Color Emoji',sans-serif;font-size:20px;line-height:1">${item.e}</span>
+    </div>`
   ).join('');
 }
 function pickEmoji(e){
